@@ -56,24 +56,25 @@ while true:
         var query = substr(cmd, 7)
         results = filter(search(query, client), validate)
         for i in 0..len(results) - 1:
-            stdout.write($i & ": " & results[i].video.get().title & " (" & results[i].uploader.get().username & ")\n")
+            stdout.write($(i + 1) & ": " & results[i].video.get().title & " (" & results[i].uploader.get().username & ")\n")
     elif substr(cmd, 0, 4) == "info ":
         var index = parseInt(substr(cmd, 5))
         if index >= 0 and index < len(results):
-            print_info(results[index])
+            print_info(results[index - 1])
         else:
             echo "Invalid index"
     elif substr(cmd, 0, 4) == "help":
         echo "Commands:"
         echo "  search <query> - search for videos"
         echo "  info <index> - print info about a video"
+        echo "  watch <index> - play video"
         echo "  exit - exit"
     elif substr(cmd,0,5) == "watch ":
         var index = parseInt(substr(cmd,6))
         if index >= 0 and index < len(results):
-            var url = results[index].video.get().url
+            var url = results[index - 1].video.get().url
             var _ = osproc.startProcess("mpv", "", [url], options={poUsePath})
         else:
             echo "Invalid index"
     else:
-        stdout.write("unknown command\n")
+        echo "unknown command\n"
