@@ -47,8 +47,8 @@ proc print_info(res: Result) =
 
 var client = newHttpClient()
 var results: seq[Result] 
-
-while true:
+var cmd = ""
+while cmd != "exit" or cmd != "quit":
     stdout.write("stoney> ")
     var cmd = stdin.readLine()
     if cmd == "exit":
