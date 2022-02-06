@@ -24,7 +24,8 @@ type SearchResult = object
     results: seq[Result]
 # search using youtube-scrape
 proc search(query: string, client: HttpClient): seq[Result] =
-    return to(parseJson(client.getContent("http://youtube-scrape.herokuapp.com/api/search?q=" & query)), SearchResult).results
+    let modified_query = strutils.replace(query, " ", "+")
+    return to(parseJson(client.getContent("http://youtube-scrape.herokuapp.com/api/search?q=" & modified_query)), SearchResult).results
 # validate results
 proc validate(res: Result): bool = isSome(res.video) and isSome(res.uploader)
 proc print_info(res: Result) =
