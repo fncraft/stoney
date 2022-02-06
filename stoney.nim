@@ -3,6 +3,7 @@ import json
 import httpclient
 import sequtils
 import strutils
+import osproc
 # types needed for parsing
 type Video = object 
     title: string
@@ -42,6 +43,7 @@ proc print_info(res: Result) =
                 echo "Uploader is not verified"
         else:
             echo "Unknown"
+
 var client = newHttpClient()
 var results: seq[Result] 
 
@@ -59,6 +61,18 @@ while true:
         var index = parseInt(substr(cmd, 5))
         if index >= 0 and index < len(results):
             print_info(results[index])
+        else:
+            echo "Invalid index"
+    elif substr(cmd, 0, 4) == "help":
+        echo "Commands:"
+        echo "  search <query> - search for videos"
+        echo "  info <index> - print info about a video"
+        echo "  exit - exit"
+    elif substr(cmd,0,5) == "watch ":
+        var index = parseInt(substr(cmd,6))
+        if index >= 0 and index < len(results):
+            var url = results[index].video.get().url
+            var _ = osproc.startProcess("mpv", "", [url], options={poUsePath})
         else:
             echo "Invalid index"
     else:
