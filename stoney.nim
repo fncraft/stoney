@@ -60,7 +60,7 @@ while cmd != "exit" or cmd != "quit":
             stdout.write($(i + 1) & ": " & results[i].video.get().title & " (" & results[i].uploader.get().username & ")\n")
     elif substr(cmd, 0, 4) == "info ":
         var index = parseInt(substr(cmd, 5))
-        if index >= 0 and index < len(results):
+        if index >= 0 and index < len(results) + 1:
             print_info(results[index - 1])
         else:
             echo "Invalid index"
@@ -72,7 +72,7 @@ while cmd != "exit" or cmd != "quit":
         echo "  exit - exit"
     elif substr(cmd,0,5) == "watch ":
         var index = parseInt(substr(cmd,6))
-        if index >= 0 and index < len(results):
+        if index >= 0 and index < len(results) + 1:
             var url = results[index - 1].video.get().url
             var _ = osproc.startProcess("mpv", "", [url], options={poUsePath})
         else:
